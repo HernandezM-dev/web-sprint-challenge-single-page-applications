@@ -8,11 +8,11 @@ import Home from './Components/Home'
 import Completed from './Components/Completed'
 
 const initialFormValues = {
-  ///// DROPDOWN /////
+  //dropdown
   size: '',
-  ///// RADIO BUTTONS /////
+  //selected radio button
   sauce: '',
-  ///// CHECKBOXES /////
+  //checkboxes
   toppings: {
     pepperoni: false,
     sausage: false,
@@ -28,14 +28,15 @@ const initialFormValues = {
     pineapple: false,
     xcheese: false
   },
-  ///// Special /////
+  //special instructions
   special: '',
 }
 
 const initialFormErrors = {
-  size: '',
-  sauce: '',
-  toppings: '',
+  name: 'test',
+  size: 'test',
+  sauce: 'test',
+  toppings: 'test',
 }
 const initialPizza = []
 const initialDisabled = true
@@ -47,48 +48,46 @@ export default function App(){
   const [disabled, setDisabled] = useState(initialDisabled)    
 
   const formSchema = yup.object().shape({
-    special: yup.string().min(4, 'Must be at least 4 characters long').required('Name is required'),
-
+    name: yup.string().min(2, 'Name must be at least 2 characters'),
+    special: yup.string(),
+    sauce: yup.string().required(),
+    size: yup.string().required()
     // checkbox: yup.boolean().oneOf([true], 'Please check checkbox')
     // sport: yup.string(),
     // wing: yup.string(),
     // four: yup.string()
 })
 
-  
-  const inputChange = (name, value, type) => {
 
-    // yup
-    //   .reach(formSchema, name)
 
-    //   .validate(value)
-    //   // if the validation is successful, we can clear the error message
-    //   .then(valid => {
-    //     setFormErrors({
-    //       ...formErrors,
-    //       [name]: "",
-    //     })
-    //   })
-    //   /* if the validation is unsuccessful, we can set the error message to the message 
-    //     returned from yup (that we created in our schema) */
-    //   .catch(err => {
-    //     setFormErrors({
-    //       ...formErrors,
-    //       [name]: err.errors[0],
-    //     })
-    //   })
-    if(type === 'radio'){
-      // setFormValues({...formValues, [original && ranch && bbq && alfredo]: false})
-      console.log(name, value)
-      setFormValues({
-        ...formValues,
-        [name]: value 
+  const inputChange = (name, value) => {
+
+    yup
+      .reach(formSchema, name)
+
+      .validate(value)
+      .then(valid => {
+        setFormErrors({
+          ...formErrors,
+          [name]: "",
+        })
       })
-    }else
+
+      .catch(err => {
+        console.log(name)
+        debugger
+        setFormErrors({
+          ...formErrors,
+          [name]: err
+        })
+      })
+
     setFormValues({
       ...formValues,
       [name]: value 
     })
+
+
   }
 
   const checkboxChange = (name, isChecked) => {

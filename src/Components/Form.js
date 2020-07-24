@@ -22,17 +22,26 @@ export default function Form(props){
       }
     
       const onInputChange = evt => {
-        const { name, value, type } = evt.target
-        inputChange(name, value, type)
+        const { name, value } = evt.target
+        inputChange(name, value)
       }
 
     return(
         <form className='form-container'onSubmit={onSubmit}>
             <h2>Build Your Own Pizza</h2>
             <div className='form-inputs'>
+                <label>Name&nbsp;
+                <input
+                    value={values.name}
+                    onChange={onInputChange}
+                    name='name'
+                    type='text'
+                />
+                </label>
+                <div>{errors.sauce}</div>
                 <div className='size'>
                     <h3>Choice of Size</h3>
-                    {/* <div>{errors.size}</div> */}
+                    <div>{errors.size}</div>
                         <select
                         onChange={onInputChange}
                         value={values.size}
@@ -47,7 +56,7 @@ export default function Form(props){
                 </div>
                 <div className='sauce'>
                     <h3>Choice of Sauce</h3>
-                    {/* <div>{errors.sauce}</div> */}
+                    <div>{errors.sauce}</div>
                     <label>Original Red
                         <input
                             type='radio'
@@ -87,7 +96,7 @@ export default function Form(props){
                 </div>
                 <div className='toppings'>
                 <h3>Add Toppings</h3>
-                    {/* <div>{errors.toppings}</div> */}
+                    <div>{errors.toppings}</div>
                     <label>Pepperoni
                     <input
                         type="checkbox"
@@ -210,7 +219,7 @@ export default function Form(props){
                             type='text'
                         />
                 </div>
-                <button /*disabled={disabled}*/>submit</button>
+                <button disabled={disabled}>submit</button>
             </div>
         </form>
     )
