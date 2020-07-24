@@ -38,7 +38,7 @@ export default function Form(props){
                     type='text'
                 />
                 </label>
-                <div>{errors.sauce}</div>
+                <div>{errors.name}</div>
                 <div className='size'>
                     <h3>Choice of Size</h3>
                     <div>{errors.size}</div>

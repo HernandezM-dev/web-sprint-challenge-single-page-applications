@@ -33,10 +33,10 @@ const initialFormValues = {
 }
 
 const initialFormErrors = {
-  name: 'test',
-  size: 'test',
-  sauce: 'test',
-  toppings: 'test',
+  name: '',
+  size: '',
+  sauce: '',
+  toppings: '',
 }
 const initialPizza = []
 const initialDisabled = true
@@ -59,6 +59,34 @@ export default function App(){
 })
 
 
+const postNewOrder = newOrder => {
+  axios.post('https://reqres.in/api/users', newOrder)
+    .then(res => {
+      console.log(res.data)
+      setFormValues(initialFormValues)
+    })
+    .catch(err => {
+      debugger
+    })
+}
+
+const submit = () => {
+  const pizza = {
+    name: formValues.name.trim(),
+    size: formValues.size.trim(),
+    sauce: formValues.sauce.trim(),
+    special: formValues.special.trim(),
+    toppings: Object.keys(formValues.toppings).filter(tp => formValues.toppings[tp]),
+  }
+  postNewOrder(pizza)
+}
+
+useEffect(() => {
+  formSchema.isValid(formValues).then(valid => {
+    setDisabled(!valid)
+  })
+}, [formValues])
+
 
   const inputChange = (name, value) => {
 
@@ -75,10 +103,9 @@ export default function App(){
 
       .catch(err => {
         console.log(name)
-        debugger
         setFormErrors({
           ...formErrors,
-          [name]: err
+          [name]: err.errors,
         })
       })
 
@@ -113,7 +140,7 @@ export default function App(){
             values={formValues}
             inputChange={inputChange}
             checkboxChange={checkboxChange}
-            // submit={submit}
+            submit={submit}
             disabled={disabled}
             errors={formErrors}/>
         </Route>
